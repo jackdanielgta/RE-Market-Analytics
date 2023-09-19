@@ -1,3 +1,4 @@
+-- Common Table Expression (CTE) to calculate the median closed price per Above Grade Sq Ft for 2023
 WITH Median2023 AS (
     SELECT 
         City,
@@ -19,6 +20,8 @@ WITH Median2023 AS (
     WHERE rn IN (FLOOR((cnt + 1) / 2), FLOOR((cnt + 2) / 2)) AND Close_Year = '2023'
     GROUP BY City, Neighbourhood, `Property Type`
 ),
+
+-- CTE to calculate the median Days on Market (DOM) for 2023
 MDOM23 AS (
     SELECT 
         City,
@@ -39,6 +42,8 @@ MDOM23 AS (
     WHERE rn IN (FLOOR((cnt + 1) / 2), FLOOR((cnt + 2) / 2)) AND Close_Year = '2023'
     GROUP BY City, Neighbourhood, `Property Type`
 ),
+
+-- CTE to count the number of closed prices for 2023
 Count2023 AS (
     SELECT 
         City,
@@ -49,6 +54,8 @@ Count2023 AS (
     WHERE LEFT(`Close Date`, 4) = '2023'
     GROUP BY City, Neighbourhood, `Property Type`
 ),
+
+-- CTE to calculate the median closed price per Above Grade Sq Ft for 2022
 Median2022 AS (
     SELECT 
         City,
@@ -71,6 +78,8 @@ Median2022 AS (
     WHERE rn IN (FLOOR((cnt + 1) / 2), FLOOR((cnt + 2) / 2)) AND Close_Year = '2022'
     GROUP BY City, Neighbourhood, `Property Type`
 ),
+
+-- CTE to calculate the median Days on Market (DOM) for 2022
 MDOM22 AS (
     SELECT 
         City,
@@ -91,6 +100,8 @@ MDOM22 AS (
     WHERE rn IN (FLOOR((cnt + 1) / 2), FLOOR((cnt + 2) / 2)) AND Close_Year = '2022'
     GROUP BY City, Neighbourhood, `Property Type`
 ),
+
+-- CTE to count the number of closed prices for 2022
 Count2022 AS (
     SELECT 
         City,
@@ -102,6 +113,7 @@ Count2022 AS (
     GROUP BY City, Neighbourhood, `Property Type`
 )
 
+-- Main query to retrieve the final results
 SELECT 
     s.City,
     s.Neighbourhood,
