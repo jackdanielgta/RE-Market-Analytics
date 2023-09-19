@@ -1,3 +1,4 @@
+-- Common Table Expression (CTE) to calculate property statistics per City, Neighbourhood, and Property Type
 WITH Per AS (
     SELECT  
         City,
@@ -13,6 +14,7 @@ WITH Per AS (
     GROUP BY City, Neighbourhood, `Property Type`
 ),
 
+-- CTE to calculate average payments per Property Type
 AVG_Payments AS (
     SELECT
         `Property Type`,
@@ -26,6 +28,8 @@ AVG_Payments AS (
     FROM solds
     GROUP BY `Property Type`
 ),
+
+-- CTE to calculate median Days on Market (DOM) in 2023 per City, Neighbourhood, and Property Type
 MDOM23 AS (
     SELECT 
         City,
@@ -47,6 +51,7 @@ MDOM23 AS (
     GROUP BY City, Neighbourhood, `Property Type`
 )
 
+-- Main query to retrieve the final results
 SELECT
     DISTINCT avgs.`MLS #`,
     avgs.`List Price`,
@@ -117,5 +122,6 @@ AND avgs.rgar < 1.33
 AND avgs.Base_Payments/ap.AVG_Payments < 1.33
 AND g.Avg_Income IS NOT NULL 
 AND g.Avg_Income > 89000
-AND avgs.`List Price` < 800000
+AND avgs.`List Price` < 850000
+AND D23.MedianDOM23 < 31
 ORDER BY AverageOrder DESC;
